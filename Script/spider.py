@@ -6,9 +6,14 @@ async def browse(page: Page, post_count: int = 5):
     for i in range(post_count):
         target = page.locator("div[data-cname='infinite-scroll'] > div").nth(i).locator("> div").nth(1)
         await target.click()
+        # 显式等待
         await page.wait_for_selector(".post-letter-paper", state="visible", timeout=5000)
+        await page.wait_for_load_state("networkidle")
+
         await page.get_by_role("img").first.click()
-        await page.wait_for_selector("div[data-cname='infinite-scroll'] > div", state="visible")
+        # 显式等待
+        await page.wait_for_selector("div[data-cname='infinite-scroll'] > div", state="visible", timeout=5000)
+        await page.wait_for_load_state("networkidle")
 
 
 async def login_blablalink(page: Page):

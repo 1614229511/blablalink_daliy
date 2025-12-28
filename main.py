@@ -20,7 +20,7 @@ async def main():
         if not await page.wait_for_selector(".w-full.h-full", state="visible", timeout=15000):
             await login_blablalink(page)
 
-        await browse(page, 1)
+        await browse(page, 5)
 
         # 正常关闭
         await browser.close()
