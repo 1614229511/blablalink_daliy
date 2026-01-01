@@ -31,3 +31,31 @@ async def login_blablalink(page: Page):
 
     await page.wait_for_selector(".w-full.h-full", state="visible", timeout=15000)
 
+async def like(page: Page, post_count: int = 5):
+    """点赞未点赞过的帖子"""
+    like_selector = "div.flex.justify-around.items-center > span:nth-child(3)"
+    await page.wait_for_selector(like_selector, timeout=10000)
+    like_buttons = page.locator(like_selector)
+
+    count = await like_buttons.count()
+    print(f"页面上一共发现了 {count} 个点赞按钮")
+
+    for i in range(min(post_count, count)):
+        try:
+            # 滚动到该按钮位置，防止被遮挡
+            await like_buttons.nth(i).scroll_into_view_if_needed()
+            # 点击
+            await like_buttons.nth(i).click()
+            print(f"成功点击第 {i + 1} 个点赞")
+            # 适当停顿，防止被反爬虫识别太快
+            await page.wait_for_timeout(1000)
+        except Exception as e:
+            print(f"点击第 {i + 1} 个失败: {e}")
+
+
+async def get_rewards(page: Page):
+    """领取奖励"""
+    await page.locator("div:nth-child(5) > .w-\\[44px\\]").click()
+    await page.wait_for_load_state("networkidle")
+
+    await page.locator(".w-\\[24px\\].h-\\[24px\\].bg-\\[length\\:100\\%_100\\%\\]").first.click()

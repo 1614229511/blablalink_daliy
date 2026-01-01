@@ -3,7 +3,7 @@ import pathlib
 
 from playwright.async_api import async_playwright
 
-from Script.spider import browse, login_blablalink
+from Script.spider import browse, login_blablalink, like, get_rewards
 
 BOT_PROFILE = pathlib.Path(__file__).with_name('edge_bot_profile')   # 项目目录下新建
 
@@ -21,7 +21,8 @@ async def main():
             await login_blablalink(page)
 
         await browse(page, 5)
-
+        await like(page, 10)
+        await get_rewards(page)
         # 正常关闭
         await browser.close()
 
