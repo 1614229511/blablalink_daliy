@@ -22,4 +22,9 @@ jobs:
           # 如果你有 playwright 记得在这里加 playwright install
 
       - name: Run my script
-        run: python main.py # 第四步：开跑！
+        env:
+          # 格式是：自定义环境变量名: ${{ secrets.你刚才填的Name }}
+          ACCOUNT: ${{ secrets.ACCOUNT }} 
+          PASSWORD: ${{ secrets.PASSWORD }} 
+        run: python main.py
+
