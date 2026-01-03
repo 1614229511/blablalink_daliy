@@ -28,7 +28,8 @@ async def login_blablalink(page: Page):
         await cookie_btn.click()
 
     await page.locator("img").nth(1).click()
-    await page.get_by_role("listitem").filter(has_text="日本/韓國/北美/東南亞/全球").click()
+    # 有可能默认选择好地区了
+    if await (loc := page.get_by_role("listitem").filter(has_text="日本/韓國/北美/東南亞/全球")).is_visible(): await loc.click()
     await page.get_by_role("textbox", name="電郵地址").click()
     await page.get_by_role("textbox", name="電郵地址").fill(os.getenv("ACCOUNT"))
     await page.get_by_role("textbox", name="電郵地址").press("Tab")
@@ -37,8 +38,9 @@ async def login_blablalink(page: Page):
     # 截图
     await page.screenshot(path="login.png")
 
-    await page.wait_for_selector(".w-full.h-full", state="visible", timeout=15000)
+    await page.wait_for_selector('img[src*="_4eea39087539e7663bbf9c3d5fea234e98471c7f"]', state="visible", timeout=10000)
     print("账户登录结束...")
+
 
 async def like(page: Page, post_count: int = 5):
     """点赞未点赞过的帖子"""
