@@ -25,8 +25,9 @@ async def login_blablalink(page: Page):
     await page.screenshot(path="cookie.png")
 
     if await (cookie_btn := page.get_by_role("button", name="接受所有可選 cookies")).is_visible(timeout=2000):
+        print("发现cookies弹窗...")
         await cookie_btn.click()
-
+    print("点击登录头像...")
     await page.locator("img").nth(1).click()
     # 有可能默认选择好地区了
     if await (loc := page.get_by_role("listitem").filter(has_text="日本/韓國/北美/東南亞/全球")).is_visible(timeout=2000): await loc.click()
