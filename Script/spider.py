@@ -2,8 +2,6 @@ import os
 
 from playwright.async_api import Page
 
-import setting
-
 
 async def browse(page: Page, post_count: int = 5):
     """浏览帖子"""
@@ -32,6 +30,8 @@ async def login_blablalink(page: Page):
     await page.get_by_role("textbox", name="電郵地址").press("Tab")
     await page.get_by_role("textbox", name="密碼").fill(os.getenv("PASSWORD"))
     await page.get_by_role("button", name="登入", exact=True).click()
+    # 截图
+    await page.screenshot(path="login.png")
 
     await page.wait_for_selector(".w-full.h-full", state="visible", timeout=15000)
 
@@ -61,5 +61,7 @@ async def get_rewards(page: Page):
     """领取奖励"""
     await page.locator("div:nth-child(5) > .w-\\[44px\\]").click()
     await page.wait_for_load_state("networkidle")
+    # 截图
+    await page.screenshot(path="reward.png")
 
     await page.locator(".w-\\[24px\\].h-\\[24px\\].bg-\\[length\\:100\\%_100\\%\\]").first.click()
