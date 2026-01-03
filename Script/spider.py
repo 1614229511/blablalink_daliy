@@ -88,3 +88,5 @@ async def get_rewards(page: Page):
     await page.screenshot(path="reward.png")
 
     await page.locator(".w-\\[24px\\].h-\\[24px\\].bg-\\[length\\:100\\%_100\\%\\]").first.click()
+    await page.wait_for_timeout(2000)
+    await page.screenshot(path="final_state.png")
