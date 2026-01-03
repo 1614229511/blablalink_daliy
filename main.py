@@ -18,11 +18,12 @@ async def main():
         page = browser.pages[0] if browser.pages else await browser.new_page()
         print("跳转到blablalink首页...")
         await page.goto('https://www.blablalink.com/?from=from%3DH5_30monthanni%3Douter_game&lang=zh-TW', wait_until="load")
-        if not await page.wait_for_selector(".w-full.h-full", state="visible", timeout=15000):
-            print("正在打开登录页面...")
-            await login_blablalink(page)
+        # if not await page.wait_for_selector(".w-full.h-full", state="visible", timeout=15000):
+        #     print("正在打开登录页面...")
+        #     await login_blablalink(page)
         # 截图
         await page.screenshot(path="main.png")
+        await login_blablalink(page)
 
         await browse(page, 5)
         await like(page, 10)
