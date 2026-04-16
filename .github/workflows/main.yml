@@ -1,20 +1,20 @@
-name: MyAutoTask  # 任务名字
+name: MyAutoTask
 
 on:
-  workflow_dispatch: # 重点：这行能让你在网页上点按钮手动触发，调试必备
+  workflow_dispatch:
   schedule:
-    - cron: '0 2 * * *' # 北京时间 10:00 (UTC 02:00)
+    - cron: '0 2 * * *'
 
 jobs:
   build:
-    runs-on: ubuntu-latest # 给你的免费服务器系统
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3 # 第一步：把你的代码下载到这台服务器上
+      - uses: actions/checkout@v4  # 修改：v3 -> v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # 修改：v4 -> v5
         with:
-          python-version: '3.11' # 第二步：安装 Python 环境
+          python-version: '3.11'
 
       - name: Install Chinese Fonts (Full Support)
         run: |
@@ -27,15 +27,14 @@ jobs:
 
       - name: Run my script
         env:
-          # 格式是：自定义环境变量名: ${{ secrets.你刚才填的Name }}
           ACCOUNT: ${{ secrets.ACCOUNT }} 
           PASSWORD: ${{ secrets.PASSWORD }} 
         run: python main.py
 
-      - name: Upload Screenshots # 这一步是关键
-        if: always() # 确保即使脚本报错了，也要上传截图
-        uses: actions/upload-artifact@v4
+      - name: Upload Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4 # v4 已兼容 Node 24，保持不变即可
         with:
           name: debug-screenshots
-          path: "**/*.png" # 暴力搜索所有子目录下的 png
-          retention-days: 5       # 图片保存天数
+          path: "**/*.png"
+          retention-days: 5
